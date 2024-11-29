@@ -4,11 +4,13 @@ const router = Router();
 
 const admin = require('firebase-admin');
 
-admin.initializeApp({
-    credential: admin.credential.cert('./permissions.json') ,
-    databaseURL:'https://node-firebase-example-fd01e-default-rtdb.firebaseio.com',
-})
-const db = admin.firestore();
+const {db} = require('../firebase-config');
+
+// admin.initializeApp({
+//     credential: admin.credential.cert('./permissions.json') ,
+//     databaseURL:'https://node-firebase-example-fd01e-default-rtdb.firebaseio.com',
+// })
+// const db = admin.firestore();
 
 //---------------------------------------Rutas de Tecnologicos -----------------
 //Tecnologicos id, nombre, ciudad, municipio, carreras (arreglo)
@@ -48,9 +50,9 @@ router.post('/api/nuevo-tec', async (req, res) => {
         // Crear un nuevo documento con un ID único
         const newDocRef = collectionRef.doc(nextId.toString());
 
-        // Guardar el documento con el nuevo ID
+        // Guardar el documento con el nuevo ID alv
         await newDocRef.set({
-            id: nextId, // Mantiene la secuencia 1, 2, 3, 4
+            id: nextId, // Esta madre si mantiene la perr4 secuencia 1, 2, 3, 4
             name: req.body.name,
             city: req.body.city,
             town: req.body.town,

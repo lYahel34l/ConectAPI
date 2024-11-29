@@ -16,6 +16,9 @@ app.get('/hello-world', (req, res)=>{
 });
 
 app.use(require('./routes/tecs.routes'));
+app.use(require('./routes/winners.routes'));
+app.use(require('./routes/proyects.routes'));
 
 exports.app = functions.https.onRequest(app);
+
 
