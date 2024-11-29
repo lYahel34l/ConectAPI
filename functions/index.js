@@ -1,5 +1,3 @@
-
-
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 
@@ -16,6 +14,7 @@ app.get('/hello-world', (req, res)=>{
 });
 
 app.use(require('./routes/tecs.routes'));
+app.use(require('./routes/event.routes'));
+app.use(require('./routes/user.routes'));
 
 exports.app = functions.https.onRequest(app);
-

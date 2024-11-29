@@ -4,11 +4,7 @@ const router = Router();
 
 const admin = require('firebase-admin');
 
-admin.initializeApp({
-    credential: admin.credential.cert('./permissions.json') ,
-    databaseURL:'https://node-firebase-example-fd01e-default-rtdb.firebaseio.com',
-})
-const db = admin.firestore();
+const {db} = require('../firebase-config');
 
 //---------------------------------------Rutas de Tecnologicos -----------------
 //Tecnologicos id, nombre, ciudad, municipio, carreras (arreglo)
