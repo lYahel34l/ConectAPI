@@ -11,20 +11,56 @@ const {db} = require('../firebase-config');
 
 
 //Agregar uno nuevo
+// router.post('/api/nuevo-tec', async (req, res) => {
+//     try{
+//         await db.collection('tecs').doc('/' + req.body.id + '/').create(
+//             {name: req.body.name, 
+//             city: req.body.city, 
+//             town: req.body.town,
+//             degree: req.body.degree
+//         });
+
+//         return res.json();
+//     }catch(error){
+//         return res.status(500).send(error);
+//     }
+// });
+
+
 router.post('/api/nuevo-tec', async (req, res) => {
-    try{
-        await db.collection('tecs').doc('/' + req.body.id + '/').create(
-            {name: req.body.name, 
-            city: req.body.city, 
+    try {
+        const collectionRef = db.collection('tecs');
+
+        // Obtener todos los documentos ordenados por ID (convertido a número)
+        const snapshot = await collectionRef.orderBy('id', 'desc').limit(1).get();
+
+        // Calcular el próximo ID
+        let nextId = 1; // Si no hay documentos, el ID inicial será 1
+        if (!snapshot.empty) {
+            const lastDoc = snapshot.docs[0].data();
+            nextId = parseInt(lastDoc.id) + 1;
+        }
+
+        // Crear un nuevo documento con un ID único
+        const newDocRef = collectionRef.doc(nextId.toString());
+
+        // Guardar el documento con el nuevo ID alv
+        await newDocRef.set({
+            id: nextId, // Esta madre si mantiene la perr4 secuencia 1, 2, 3, 4
+            name: req.body.name,
+            city: req.body.city,
             town: req.body.town,
-            degree: req.body.degree
+            degree: req.body.degree,
         });
 
-        return res.json();
-    }catch(error){
+        return res.status(201).json({ message: 'Tecnológico creado', id: nextId });
+    } catch (error) {
+        console.error('Error al crear el tecnológico:', error);
         return res.status(500).send(error);
     }
 });
+
+
 
 
 //Lista de Tecnologicos
