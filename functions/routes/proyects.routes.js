@@ -98,7 +98,5 @@ router.get("/api/proyects/:name", async (req, res) => {
   }
 });
 
-module.exports = router;
-
 
 module.exports = router;

@@ -73,6 +73,7 @@ router.get("/api/tecs", async (req, res)=>{
       name: doc.data().name,
       city: doc.data().city,
       town: doc.data().town,
+      degree: doc.data().degree,
     }));
 
     return res.status(200).json(response);
