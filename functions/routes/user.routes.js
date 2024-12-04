@@ -158,15 +158,42 @@ router.delete("/api/delete-user/:user_id", async (req, res)=> {
 
 // Editar usuario
 
-router.put("/api/user/:user_id", async (req, res)=> {
+router.put("/api/edit-user/:user_id", async (req, res) => {
   try {
-    const document = db.collection("user").doc(req.params.user_id);
-    document.update({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+    const userId = req.params.user_id;
+    const updateData = {};
+
+    // Solo agrega a updateData aquellos campos que existen en req.body
+    if (req.body.name) {
+      updateData.name = req.body.name;
+    }
+    if (req.body.email) {
+      updateData.email = req.body.email;
+    }
+    if (req.body.password) {
+      updateData.password = req.body.password;
+    }
+    if (req.body.degree) {
+      updateData.degree = req.body.degree;
+    }
+    if (req.body.tec) {
+      updateData.tec = req.body.tec;
+    }
+
+    // Si no hay campos para actualizar, responde un error
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        message: "No fields provided to update",
+      });
+    }
+
+    const userRef = db.collection("user").doc(userId);
+    await userRef.update(updateData);
+    // Actualiza solo los campos que se proporcionaron
+
+    return res.status(200).json({
+      message: "User updated successfully",
     });
-    return res.status(200).json();
   } catch (error) {
     return res.status(500).send(error);
   }
